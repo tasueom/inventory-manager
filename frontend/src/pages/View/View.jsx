@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import { getInventories, deleteInventory } from "../../api";
+import { getInventories, createInventory, deleteInventory } from "../../api";
 import "./View.css";
 
 function View() {
+  const [name, setName] = useState("");
+  const [unitPrice, setUntPrice] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [inventories, setInventories] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -12,20 +15,61 @@ function View() {
     setLoading(false);
   };
 
+  useEffect(() => {
+    loadInventories();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    await createInventory({ name, unitPrice, quantity });
+
+    setName("");
+    setUntPrice(0);
+    setQuantity(0);
+
+    loadInventories();
+  };
+
   const handleDelete = async (id) => {
     if (!window.confirm("삭제하시겠습니까?")) return;
     await deleteInventory(id);
     await loadInventories();
   };
 
-  useEffect(() => {
-    loadInventories();
-  }, []);
-
   return (
     <div className="page-container">
       <h2>상품 목록</h2>
       <table>
+        <tr>
+          <td>
+            <input
+              type="text"
+              placeholder="상품명"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              placeholder="가격"
+              value={unitPrice}
+              onChange={(e) => setUntPrice(Number(e.target.value))}
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              placeholder="수량"
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+            />
+          </td>
+        </tr>
+        <button onClick={handleSubmit}>저장</button>
+      </table>
+      <table id="list-table">
         <thead>
           <tr>
             <th>품번</th>
