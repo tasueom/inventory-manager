@@ -65,53 +65,57 @@ function View() {
   return (
     <div className="page-container">
       <h2>상품 목록</h2>
-      <table>
+      <form className="product-form" onSubmit={handleSubmit}>
         {editingId === null ? (
           <h3>신규 상품 등록</h3>
         ) : (
           <h3>[{editingId}] 정보 수정</h3>
         )}
-        <tr>
-          <td>
+        <div className="form-row">
+          <div className="form-field">
             <input
               type="text"
               placeholder="상품명"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-          </td>
-          <td>
+          </div>
+          <div className="form-field">
             <input
               type="number"
               placeholder="가격"
               value={unitPrice}
               onChange={(e) => setUntPrice(Number(e.target.value))}
             />
-          </td>
-          <td>
+          </div>
+          <div className="form-field">
             <input
               type="number"
               placeholder="수량"
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
             />
-          </td>
-          <td>
+          </div>
+          <div className="form-field">
             <input
               type="text"
               placeholder="총액"
               value={unitPrice * quantity === 0 ? "" : unitPrice * quantity}
               readOnly
             />
-          </td>
-        </tr>
+          </div>
+        </div>
         <div className="btn-group">
-          <button onClick={handleSubmit}>
+          <button type="submit">
             {editingId === null ? "저장" : "수정"}
           </button>
-          {editingId && <button onClick={cancelEdit}>수정 취소</button>}
+          {editingId && (
+            <button type="button" onClick={cancelEdit}>
+              수정 취소
+            </button>
+          )}
         </div>
-      </table>
+      </form>
       <table id="list-table">
         <thead>
           <tr>

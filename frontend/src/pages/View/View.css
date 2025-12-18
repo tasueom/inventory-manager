@@ -15,31 +15,35 @@
   letter-spacing: -0.02em;
 }
 
-/* 입력 폼 테이블 */
-.page-container > table:first-of-type {
+/* 입력 폼 */
+.product-form {
   width: 100%;
   margin-bottom: var(--spacing-md);
   background: var(--color-bg);
   border-radius: var(--border-radius);
   padding: var(--spacing-md);
   box-shadow: var(--shadow-md);
-  border-collapse: separate;
-  border-spacing: var(--spacing-sm);
 }
 
-.page-container > table:first-of-type tr {
+.product-form h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+}
+
+.product-form .form-row {
   display: flex;
   gap: var(--spacing-md);
   align-items: flex-end;
   margin-bottom: var(--spacing-md);
 }
 
-.page-container > table:first-of-type td {
+.product-form .form-field {
   flex: 1;
-  padding: 0;
 }
 
-.page-container > table:first-of-type input {
+.product-form input {
   width: 100%;
   padding: var(--spacing-xs) var(--spacing-md);
   border: 1px solid var(--color-border);
@@ -51,30 +55,35 @@
   transition: var(--transition);
 }
 
-.page-container > table:first-of-type input:focus {
+.product-form input:focus {
   outline: none;
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
 }
 
-.page-container > table:first-of-type input::placeholder {
+.product-form input::placeholder {
   color: var(--color-text-light);
 }
 
-.page-container > table:first-of-type input:read-only {
+.product-form input:read-only {
   background: var(--color-bg-secondary);
   color: var(--color-text);
   cursor: default;
   font-weight: 600;
 }
 
-.page-container > table:first-of-type input:read-only:focus {
+.product-form input:read-only:focus {
   border-color: var(--color-border);
   box-shadow: none;
   outline: none;
 }
 
-.page-container > table:first-of-type button {
+.product-form .btn-group {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.product-form button {
   padding: var(--spacing-xs) var(--spacing-md);
   background: var(--color-primary);
   color: white;
@@ -88,12 +97,20 @@
   margin: var(--spacing-xs);
 }
 
-.page-container > table:first-of-type button:hover {
+.product-form button[type="button"] {
+  background: var(--color-secondary);
+}
+
+.product-form button[type="button"]:hover {
+  background: #475569;
+}
+
+.product-form button:hover {
   background: var(--color-primary-dark);
   box-shadow: var(--shadow-md);
 }
 
-.page-container > table:first-of-type button:active {
+.product-form button:active {
   transform: scale(0.98);
 }
 
@@ -213,12 +230,16 @@
     font-size: var(--font-size-xl);
   }
   
-  .page-container > table:first-of-type tr {
+  .product-form .form-row {
     flex-direction: column;
     gap: var(--spacing-sm);
   }
   
-  .page-container > table:first-of-type button {
+  .product-form .btn-group {
+    flex-direction: column;
+  }
+  
+  .product-form button {
     width: 100%;
   }
   
