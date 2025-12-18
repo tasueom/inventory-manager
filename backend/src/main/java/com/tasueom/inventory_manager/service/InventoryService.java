@@ -52,7 +52,7 @@ public class InventoryService {
         Inventory inventory = inventoryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
 
-        inventory.update(dto.getName(), dto.getUnitPrice(), dto.getUnitPrice());
+        inventory.update(dto.getName(), dto.getUnitPrice(), dto.getQuantity());
 
         return toResponseDto(inventory);
     }
