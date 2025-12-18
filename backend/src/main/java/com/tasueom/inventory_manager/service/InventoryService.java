@@ -44,14 +44,17 @@ public class InventoryService {
     }
 
     public InventoryResponseDto getInventory(Long id) {
-        Inventory inventory = inventoryRepository.findById(id).orElseThrow();
+        Inventory inventory = inventoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
 
         return toResponseDto(inventory);
     }
 
     @Transactional
     public InventoryResponseDto updateInventory(Long id, InventoryRequestDto requestDto) {
-        Inventory inventory = inventoryRepository.findById(id).orElseThrow();
+        Inventory inventory = inventoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
+
         inventory.setName(requestDto.getName());
         inventory.setUnitPrice(requestDto.getUnitPrice());
         inventory.setQuantity(requestDto.getQuantity());
