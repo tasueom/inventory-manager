@@ -9,7 +9,7 @@ import "./View.css";
 
 function View() {
   const [name, setName] = useState("");
-  const [unitPrice, setUntPrice] = useState("");
+  const [unitPrice, setUnitPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [inventories, setInventories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,7 +36,7 @@ function View() {
     }
 
     setName("");
-    setUntPrice(0);
+    setUnitPrice(0);
     setQuantity(0);
 
     loadInventories();
@@ -45,14 +45,14 @@ function View() {
   const handleEdit = (i) => {
     setEditingId(i.id);
     setName(i.name);
-    setUntPrice(i.unitPrice);
+    setUnitPrice(i.unitPrice);
     setQuantity(i.quantity);
   };
 
   const cancelEdit = () => {
     setEditingId(null);
     setName("");
-    setUntPrice("");
+    setUnitPrice("");
     setQuantity("");
   };
 
@@ -85,7 +85,7 @@ function View() {
               type="number"
               placeholder="가격"
               value={unitPrice}
-              onChange={(e) => setUntPrice(Number(e.target.value))}
+              onChange={(e) => setUnitPrice(Number(e.target.value))}
             />
           </div>
           <div className="form-field">
@@ -106,9 +106,7 @@ function View() {
           </div>
         </div>
         <div className="btn-group">
-          <button type="submit">
-            {editingId === null ? "저장" : "수정"}
-          </button>
+          <button type="submit">{editingId === null ? "저장" : "수정"}</button>
           {editingId && (
             <button type="button" onClick={cancelEdit}>
               수정 취소
@@ -130,11 +128,11 @@ function View() {
         <tbody>
           {loading ? (
             <tr>
-              <td colSpan={5}>로딩 중...</td>
+              <td colSpan={6}>로딩 중...</td>
             </tr>
           ) : inventories.length === 0 ? (
             <tr>
-              <td colSpan="5">데이터가 없습니다.</td>
+              <td colSpan={6}>데이터가 없습니다.</td>
             </tr>
           ) : (
             inventories.map((i) => (
