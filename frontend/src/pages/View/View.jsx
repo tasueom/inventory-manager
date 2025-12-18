@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { getInventories, createInventory, deleteInventory } from "../../api";
+import {
+  getInventories,
+  createInventory,
+  updateInventory,
+  deleteInventory,
+} from "../../api";
 import "./View.css";
 
 function View() {
@@ -8,6 +13,7 @@ function View() {
   const [quantity, setQuantity] = useState("");
   const [inventories, setInventories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editingId, setEditingId] = useState(null);
 
   const loadInventories = async () => {
     const data = await getInventories();
@@ -22,13 +28,32 @@ function View() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await createInventory({ name, unitPrice, quantity });
+    if (editingId === null) {
+      await createInventory({ name, unitPrice, quantity });
+    } else {
+      await updateInventory(editingId, { name, unitPrice, quantity });
+      setEditingId(null);
+    }
 
     setName("");
     setUntPrice(0);
     setQuantity(0);
 
     loadInventories();
+  };
+
+  const handleEdit = (i) => {
+    setEditingId(i.id);
+    setName(i.name);
+    setUntPrice(i.unitPrice);
+    setQuantity(i.quantity);
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setName("");
+    setUntPrice("");
+    setQuantity("");
   };
 
   const handleDelete = async (id) => {
@@ -41,6 +66,11 @@ function View() {
     <div className="page-container">
       <h2>상품 목록</h2>
       <table>
+        {editingId === null ? (
+          <h3>신규 상품 등록</h3>
+        ) : (
+          <h3>[{editingId}] 정보 수정</h3>
+        )}
         <tr>
           <td>
             <input
@@ -66,8 +96,21 @@ function View() {
               onChange={(e) => setQuantity(Number(e.target.value))}
             />
           </td>
+          <td>
+            <input
+              type="text"
+              placeholder="총액"
+              value={unitPrice * quantity === 0 ? "" : unitPrice * quantity}
+              readOnly
+            />
+          </td>
         </tr>
-        <button onClick={handleSubmit}>저장</button>
+        <div className="btn-group">
+          <button onClick={handleSubmit}>
+            {editingId === null ? "저장" : "수정"}
+          </button>
+          {editingId && <button onClick={cancelEdit}>수정 취소</button>}
+        </div>
       </table>
       <table id="list-table">
         <thead>
@@ -98,6 +141,7 @@ function View() {
                 <td>{i.quantity}</td>
                 <td>{i.totalPrice}</td>
                 <td>
+                  <button onClick={() => handleEdit(i)}>수정</button>
                   <button onClick={() => handleDelete(i.id)}>삭제</button>
                 </td>
               </tr>
