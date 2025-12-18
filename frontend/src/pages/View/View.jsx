@@ -13,7 +13,7 @@ function View() {
   };
 
   const handleDelete = async (id) => {
-    if(!window.confirm('삭제하시겠습니까?')) return;
+    if (!window.confirm("삭제하시겠습니까?")) return;
     await deleteInventory(id);
     await loadInventories();
   };
@@ -51,7 +51,7 @@ function View() {
                 <td>{i.id}</td>
                 <td>{i.name}</td>
                 <td>{i.unitPrice}</td>
-                <td>{i.amount}</td>
+                <td>{i.quantity}</td>
                 <td>{i.totalPrice}</td>
                 <td>
                   <button onClick={() => handleDelete(i.id)}>삭제</button>
