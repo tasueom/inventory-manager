@@ -4,6 +4,7 @@ import com.tasueom.inventory_manager.dto.ApiErrorResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.http.HttpStatus;
 
 @RestControllerAdvice
@@ -23,12 +24,18 @@ public class GlobalExceptionHandler {
                 .body(new ApiErrorResponse(404, e.getMessage()));
     }
 
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ApiErrorResponse> handleMethodNotAllowed(HttpRequestMethodNotSupportedException e) {
+        return ResponseEntity
+                .status(HttpStatus.METHOD_NOT_ALLOWED)
+                .body(new ApiErrorResponse(405, "허용되지 않은 HTTP 메서드입니다."));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleException(Exception e) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ApiErrorResponse(500, "오류가 발생했습니다."));
     }
-
 
 }
