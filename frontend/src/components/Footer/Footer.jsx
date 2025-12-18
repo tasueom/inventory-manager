@@ -1,13 +1,13 @@
-import './Footer.css'
+import "./Footer.css";
 
 function Footer() {
-    return (
-        <>
-            <footer>
-                <p>Inventory Manager | Built with React + Spring Boot</p>
-            </footer>
-        </>
-    )
+  return (
+    <>
+      <footer>
+        <p>Inventory Manager | Built with React + Spring Boot</p>
+      </footer>
+    </>
+  );
 }
 
-export default Footer
+export default Footer;
