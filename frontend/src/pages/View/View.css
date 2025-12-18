@@ -1,0 +1,232 @@
+/* ============================================
+   상품 목록 페이지 스타일
+   ============================================ */
+
+.page-container {
+  width: 100%;
+  max-width: 100%;
+}
+
+.page-container h2 {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-lg);
+  letter-spacing: -0.02em;
+}
+
+/* 입력 폼 테이블 */
+.page-container > table:first-of-type {
+  width: 100%;
+  margin-bottom: var(--spacing-xl);
+  background: var(--color-bg);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-md);
+  border-collapse: separate;
+  border-spacing: var(--spacing-sm);
+}
+
+.page-container > table:first-of-type tr {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: flex-end;
+}
+
+.page-container > table:first-of-type td {
+  flex: 1;
+  padding: 0;
+}
+
+.page-container > table:first-of-type input {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  color: var(--color-text);
+  background: var(--color-bg);
+  transition: var(--transition);
+}
+
+.page-container > table:first-of-type input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+}
+
+.page-container > table:first-of-type input::placeholder {
+  color: var(--color-text-light);
+}
+
+.page-container > table:first-of-type button {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.page-container > table:first-of-type button:hover {
+  background: var(--color-primary-dark);
+  box-shadow: var(--shadow-md);
+}
+
+.page-container > table:first-of-type button:active {
+  transform: scale(0.98);
+}
+
+/* 상품 목록 테이블 */
+#list-table {
+  width: 100%;
+  background: var(--color-bg);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border-collapse: collapse;
+}
+
+#list-table thead {
+  background: var(--color-bg-secondary);
+}
+
+#list-table th {
+  padding: var(--spacing-md);
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--color-border);
+}
+
+#list-table tbody tr {
+  border-bottom: 1px solid var(--color-border);
+  transition: var(--transition);
+}
+
+#list-table tbody tr:hover {
+  background: var(--color-bg-secondary);
+}
+
+#list-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+#list-table td {
+  padding: var(--spacing-md);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+}
+
+#list-table td:first-child {
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+#list-table td:nth-child(3),
+#list-table td:nth-child(4),
+#list-table td:nth-child(5) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#list-table td:nth-child(5) {
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+#list-table button {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: calc(var(--border-radius) / 2);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+#list-table button:hover {
+  background: #dc2626;
+  box-shadow: var(--shadow-sm);
+}
+
+#list-table button:active {
+  transform: scale(0.95);
+}
+
+/* 빈 상태 메시지 */
+#list-table tbody tr td[colspan] {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-light);
+  font-style: italic;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .page-container h2 {
+    font-size: var(--font-size-xl);
+  }
+  
+  .page-container > table:first-of-type tr {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .page-container > table:first-of-type button {
+    width: 100%;
+  }
+  
+  #list-table {
+    font-size: var(--font-size-sm);
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  #list-table thead,
+  #list-table tbody,
+  #list-table tr,
+  #list-table th,
+  #list-table td {
+    display: block;
+  }
+  
+  #list-table thead {
+    display: none;
+  }
+  
+  #list-table tr {
+    margin-bottom: var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-sm);
+  }
+  
+  #list-table td {
+    padding: var(--spacing-xs) 0;
+    text-align: left !important;
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  #list-table td:last-child {
+    border-bottom: none;
+  }
+  
+  #list-table td:before {
+    content: attr(data-label) ": ";
+    font-weight: 600;
+    color: var(--color-text-light);
+  }
+}
+
