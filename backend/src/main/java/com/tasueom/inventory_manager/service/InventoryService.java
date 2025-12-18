@@ -3,6 +3,7 @@ package com.tasueom.inventory_manager.service;
 import com.tasueom.inventory_manager.dto.InventoryRequestDto;
 import com.tasueom.inventory_manager.dto.InventoryResponseDto;
 import com.tasueom.inventory_manager.entity.Inventory;
+import com.tasueom.inventory_manager.exception.ResourceNotFoundException;
 import com.tasueom.inventory_manager.repository.InventoryRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,7 @@ public class InventoryService {
 
     public InventoryResponseDto getInventory(Long id) {
         Inventory inventory = inventoryRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id:=" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("해당 상품이 없습니다. id:=" + id));
 
         return toResponseDto(inventory);
     }
@@ -44,7 +45,7 @@ public class InventoryService {
     @Transactional
     public InventoryResponseDto updateInventory(Long id, InventoryRequestDto dto) {
         Inventory inventory = inventoryRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id:=" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("해당 상품이 없습니다. id:=" + id));
 
         inventory.update(dto.getName(), dto.getUnitPrice(), dto.getQuantity());
 
