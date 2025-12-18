@@ -11,7 +11,6 @@ function Header() {
         <ul>
           <li><Link to="/">홈</Link></li>
           <li><Link to="/view">상품 목록</Link></li>
-          <li><Link to="/create">상품 등록</Link></li>
         </ul>
       </nav>
     </>
