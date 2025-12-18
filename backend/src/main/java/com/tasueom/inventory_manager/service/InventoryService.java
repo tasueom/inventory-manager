@@ -42,7 +42,7 @@ public class InventoryService {
 
     public InventoryResponseDto getInventory(Long id) {
         Inventory inventory = inventoryRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id:=" + id));
 
         return toResponseDto(inventory);
     }
@@ -50,7 +50,7 @@ public class InventoryService {
     @Transactional
     public InventoryResponseDto updateInventory(Long id, InventoryRequestDto dto) {
         Inventory inventory = inventoryRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id:=" + id));
 
         inventory.update(dto.getName(), dto.getUnitPrice(), dto.getQuantity());
 
