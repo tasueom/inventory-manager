@@ -20,9 +20,8 @@ public class InventoryService {
     }
 
     @Transactional
-    public InventoryResponseDto createInventory(InventoryRequestDto requestDto) {
-        Inventory inventory = new Inventory();
-        inventory.updateFrom(requestDto);
+    public InventoryResponseDto createInventory(InventoryRequestDto dto) {
+        Inventory inventory = new Inventory(dto.getName(), dto.getUnitPrice(), dto.getQuantity());
 
         Inventory savedInventory = inventoryRepository.save(inventory);
 
@@ -49,11 +48,11 @@ public class InventoryService {
     }
 
     @Transactional
-    public InventoryResponseDto updateInventory(Long id, InventoryRequestDto requestDto) {
+    public InventoryResponseDto updateInventory(Long id, InventoryRequestDto dto) {
         Inventory inventory = inventoryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
 
-        inventory.updateFrom(requestDto);
+        inventory.update(dto.getName(), dto.getUnitPrice(), dto.getUnitPrice());
 
         return toResponseDto(inventory);
     }
@@ -68,7 +67,7 @@ public class InventoryService {
         responseDto.setName(inventory.getName());
         responseDto.setUnitPrice(inventory.getUnitPrice());
         responseDto.setQuantity(inventory.getQuantity());
-        int totalPrice = inventory.getUnitPrice() * inventory.getQuantity();
+        long totalPrice = (long) inventory.getUnitPrice() * inventory.getQuantity();
         responseDto.setTotalPrice(totalPrice);
 
         return responseDto;

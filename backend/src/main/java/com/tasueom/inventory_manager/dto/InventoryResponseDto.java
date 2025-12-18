@@ -10,5 +10,5 @@ public class InventoryResponseDto {
     private String name;
     private int unitPrice;
     private int quantity;
-    private int totalPrice;
+    private long totalPrice;
 }
