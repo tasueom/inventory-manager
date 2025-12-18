@@ -85,7 +85,7 @@
   cursor: pointer;
   transition: var(--transition);
   white-space: nowrap;
-  margin-top: var(--spacing-md);
+  margin: var(--spacing-xs);
 }
 
 .page-container > table:first-of-type button:hover {
@@ -172,6 +172,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: var(--transition);
+  margin: var(--spacing-xs);
 }
 
 /* 수정 버튼 */
