@@ -39,7 +39,7 @@ function View() {
     setUnitPrice(0);
     setQuantity(0);
 
-    loadInventories();
+    await loadInventories();
   };
 
   const handleEdit = (i) => {
