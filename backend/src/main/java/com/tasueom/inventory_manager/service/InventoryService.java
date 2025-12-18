@@ -29,15 +29,9 @@ public class InventoryService {
     }
 
     public List<InventoryResponseDto> getInventoryList() {
-        List<Inventory> entityList = inventoryRepository.findAll();
-        List<InventoryResponseDto> dtoList = new ArrayList<>();
-
-        for (Inventory inventory : entityList) {
-            InventoryResponseDto dto = toResponseDto(inventory);
-            dtoList.add(dto);
-        }
-
-        return dtoList;
+        return inventoryRepository.findAll().stream()
+                .map(this::toResponseDto)
+                .toList();
     }
 
     public InventoryResponseDto getInventory(Long id) {
