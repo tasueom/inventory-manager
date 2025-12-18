@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Header.css";
 
 function Header() {
@@ -6,6 +7,13 @@ function Header() {
       <header>
         <h1>재고 관리 시스템</h1>
       </header>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">홈</Link>
+          </li>
+        </ul>
+      </nav>
     </>
   );
 }
