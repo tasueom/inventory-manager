@@ -28,18 +28,22 @@ function View() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (editingId === null) {
-      await createInventory({ name, unitPrice, quantity });
-    } else {
-      await updateInventory(editingId, { name, unitPrice, quantity });
-      setEditingId(null);
+    try {
+      if (editingId === null) {
+        await createInventory({ name, unitPrice, quantity });
+      } else {
+        await updateInventory(editingId, { name, unitPrice, quantity });
+        setEditingId(null);
+      }
+      setName("");
+      setUnitPrice(0);
+      setQuantity(0);
+
+      await loadInventories();
+    } catch (err) {
+      const msg = err?.response?.data?.message || "오류가 발생하였습니다.";
+      alert(msg);
     }
-
-    setName("");
-    setUnitPrice(0);
-    setQuantity(0);
-
-    await loadInventories();
   };
 
   const handleEdit = (i) => {

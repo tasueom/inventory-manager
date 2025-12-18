@@ -1,13 +1,22 @@
 const BASE_URL = "http://localhost:8090/api/inventory";
 
+async function checkError(res) {
+  if (!res.ok) {
+    const data = await res.json(); // {status, message} 기대
+    throw { response: { data } }; // View의 err.response.data.message 유지
+  }
+}
+
 export async function getInventories() {
   const res = await fetch(`${BASE_URL}`);
-  return res.json();
+  await checkError(res);
+  return await res.json();
 }
 
 export async function getInventory(id) {
   const res = await fetch(`${BASE_URL}/${id}`);
-  return res.json;
+  await checkError(res);
+  return await res.json();
 }
 
 export async function createInventory(inventory) {
@@ -16,7 +25,8 @@ export async function createInventory(inventory) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(inventory),
   });
-  return res.json;
+  await checkError(res);
+  return await res.json();
 }
 
 export async function updateInventory(id, inventory) {
@@ -25,11 +35,13 @@ export async function updateInventory(id, inventory) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(inventory),
   });
-  return res.json;
+  await checkError(res);
+  return await res.json();
 }
 
 export async function deleteInventory(id) {
-  await fetch(`${BASE_URL}/${id}`, {
+  const res = await fetch(`${BASE_URL}/${id}`, {
     method: "DELETE",
   });
+  await checkError(res);
 }
