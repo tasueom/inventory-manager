@@ -1,0 +1,68 @@
+import { useEffect, useState } from "react";
+import { getInventories, deleteInventory } from "../../api";
+import "./View.css";
+
+function View() {
+  const [inventories, setInventories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const loadInventories = async () => {
+    const data = await getInventories();
+    setInventories(data);
+    setLoading(false);
+  };
+
+  const handleDelete = async (id) => {
+    if(!window.confirm('삭제하시겠습니까?')) return;
+    await deleteInventory(id);
+    await loadInventories();
+  };
+
+  useEffect(() => {
+    loadInventories();
+  }, []);
+
+  return (
+    <div className="page-container">
+      <h2>상품 목록</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>품번</th>
+            <th>품명</th>
+            <th>단가</th>
+            <th>수량</th>
+            <th>총액</th>
+            <th>관리</th>
+          </tr>
+        </thead>
+        <tbody>
+          {loading ? (
+            <tr>
+              <td colSpan={5}>로딩 중...</td>
+            </tr>
+          ) : inventories.length === 0 ? (
+            <tr>
+              <td colSpan="5">데이터가 없습니다.</td>
+            </tr>
+          ) : (
+            inventories.map((i) => (
+              <tr key={i.id}>
+                <td>{i.id}</td>
+                <td>{i.name}</td>
+                <td>{i.unitPrice}</td>
+                <td>{i.amount}</td>
+                <td>{i.totalPrice}</td>
+                <td>
+                  <button onClick={() => handleDelete(i.id)}>삭제</button>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+export default View;
