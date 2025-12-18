@@ -57,13 +57,14 @@ public class InventoryService {
     }
 
     private InventoryResponseDto toResponseDto(Inventory inventory) {
-        InventoryResponseDto responseDto = new InventoryResponseDto();
-        responseDto.setName(inventory.getName());
-        responseDto.setUnitPrice(inventory.getUnitPrice());
-        responseDto.setQuantity(inventory.getQuantity());
+        InventoryResponseDto dto = new InventoryResponseDto();
+        dto.setId(inventory.getId());
+        dto.setName(inventory.getName());
+        dto.setUnitPrice(inventory.getUnitPrice());
+        dto.setQuantity(inventory.getQuantity());
         long totalPrice = (long) inventory.getUnitPrice() * inventory.getQuantity();
-        responseDto.setTotalPrice(totalPrice);
+        dto.setTotalPrice(totalPrice);
 
-        return responseDto;
+        return dto;
     }
 }
