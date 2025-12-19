@@ -1,4 +1,4 @@
-import { useEffect, useState, FormEvent } from "react";
+import { useEffect, useState } from "react";
 import {
   getInventories,
   createInventory,
@@ -15,25 +15,34 @@ function View() {
   const [inventories, setInventories] = useState<Inventory[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const loadInventories = async () => {
-    const data = await getInventories();
-    setInventories(data);
-    setLoading(false);
+    try {
+      setLoading(true);
+      setErrorMsg(""); // A) 요청 시작 시 초기화
+
+      const data = await getInventories();
+      setInventories(data);
+    } catch (err: any) {
+      setErrorMsg(err?.response?.data?.message || "목록 조회 실패");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     loadInventories();
   }, []);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const price = Number(unitPrice);
     const quant = Number(quantity);
 
     if (name.trim() === "" || price <= 0 || quant <= 0) {
-      alert("올바른 값을 입력해주세요.");
+      setErrorMsg("올바른 값을 입력해주세요.");
       return;
     }
 
@@ -50,9 +59,11 @@ function View() {
       setQuantity("");
 
       await loadInventories();
+
+      setErrorMsg("");
     } catch (err: any) {
       const msg = err?.response?.data?.message || "오류가 발생하였습니다.";
-      alert(msg);
+      setErrorMsg(msg);
     }
   };
 
@@ -61,6 +72,8 @@ function View() {
     setName(i.name);
     setUnitPrice(i.unitPrice);
     setQuantity(i.quantity);
+
+    setErrorMsg("");
   };
 
   const cancelEdit = () => {
@@ -68,17 +81,27 @@ function View() {
     setName("");
     setUnitPrice("");
     setQuantity("");
+    setErrorMsg("");
   };
 
   const handleDelete = async (id: number) => {
     if (!window.confirm("삭제하시겠습니까?")) return;
-    await deleteInventory(id);
-    await loadInventories();
+
+    try {
+      await deleteInventory(id);
+      await loadInventories();
+      setErrorMsg("");
+    } catch (err: any) {
+      setErrorMsg(
+        err?.response?.data?.message || "삭제 중 오류가 발생하였습니다."
+      );
+    }
   };
 
   return (
     <div className="page-container">
       <h2>상품 목록</h2>
+      {errorMsg && <div className="error-box">{errorMsg}</div>}
       <form className="product-form" onSubmit={handleSubmit}>
         {editingId === null ? (
           <h3>신규 상품 등록</h3>
@@ -100,7 +123,9 @@ function View() {
               placeholder="가격"
               value={unitPrice}
               onChange={(e) =>
-                setUnitPrice(e.target.value === "" ? "" : Number(e.target.value))
+                setUnitPrice(
+                  e.target.value === "" ? "" : Number(e.target.value)
+                )
               }
             />
           </div>
