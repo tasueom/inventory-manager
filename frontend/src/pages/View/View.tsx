@@ -100,9 +100,9 @@ function View() {
 
   return (
     <div className="page-container">
-      <h2>상품 목록</h2>
+      <h2 className="page-title">상품 목록</h2>
       {errorMsg && <div className="error-box">{errorMsg}</div>}
-      <form className="product-form" onSubmit={handleSubmit}>
+      <form className="product-form form-container" onSubmit={handleSubmit}>
         {editingId === null ? (
           <h3>신규 상품 등록</h3>
         ) : (
@@ -112,6 +112,7 @@ function View() {
           <div className="form-field">
             <input
               type="text"
+              className="form-input"
               placeholder="상품명"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -120,6 +121,7 @@ function View() {
           <div className="form-field">
             <input
               type="number"
+              className="form-input"
               placeholder="가격"
               value={unitPrice}
               onChange={(e) =>
@@ -132,6 +134,7 @@ function View() {
           <div className="form-field">
             <input
               type="number"
+              className="form-input"
               placeholder="수량"
               value={quantity}
               onChange={(e) =>
@@ -142,6 +145,7 @@ function View() {
           <div className="form-field">
             <input
               type="text"
+              className="form-input"
               placeholder="총액"
               value={
                 Number(unitPrice) * Number(quantity) === 0
@@ -153,9 +157,9 @@ function View() {
           </div>
         </div>
         <div className="btn-group">
-          <button type="submit">{editingId === null ? "저장" : "수정"}</button>
+          <button type="submit" className="btn btn-primary">{editingId === null ? "저장" : "수정"}</button>
           {editingId && (
-            <button type="button" onClick={cancelEdit}>
+            <button type="button" className="btn btn-secondary" onClick={cancelEdit}>
               수정 취소
             </button>
           )}
@@ -190,8 +194,8 @@ function View() {
                 <td>{i.quantity}</td>
                 <td>{i.totalPrice}</td>
                 <td>
-                  <button onClick={() => handleEdit(i)}>수정</button>
-                  <button onClick={() => handleDelete(i.id)}>삭제</button>
+                  <button className="btn btn-primary btn-sm" onClick={() => handleEdit(i)}>수정</button>
+                  <button className="btn btn-danger btn-sm" onClick={() => handleDelete(i.id)}>삭제</button>
                 </td>
               </tr>
             ))

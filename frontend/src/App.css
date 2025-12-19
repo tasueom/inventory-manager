@@ -107,5 +107,223 @@ main {
   padding: 10px 12px;
   border: 1px solid #ffb4b4;
   background: #fff5f5;
-  border-radius: 8px;
+  border-radius: var(--border-radius);
+}
+
+/* ============================================
+   공통 컴포넌트 스타일
+   ============================================ */
+
+/* 제목 스타일 */
+.page-title {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-lg);
+  letter-spacing: -0.02em;
+}
+
+.page-title-large {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--spacing-md);
+}
+
+/* 폼 스타일 */
+.form-container {
+  width: 100%;
+  background: var(--color-bg);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.form-container h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+}
+
+.form-row {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: flex-end;
+  margin-bottom: var(--spacing-md);
+}
+
+.form-field {
+  flex: 1;
+}
+
+.form-input {
+  width: 100%;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  color: var(--color-text);
+  background: var(--color-bg);
+  transition: var(--transition);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+}
+
+.form-input::placeholder {
+  color: var(--color-text-light);
+}
+
+.form-input:read-only {
+  background: var(--color-bg-secondary);
+  color: var(--color-text);
+  cursor: default;
+  font-weight: 600;
+}
+
+.form-input:read-only:focus {
+  border-color: var(--color-border);
+  box-shadow: none;
+  outline: none;
+}
+
+/* 버튼 스타일 */
+.btn-group {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.btn {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+  font-family: var(--font-family);
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-dark);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background: var(--color-secondary);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #475569;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-sm {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  border-radius: calc(var(--border-radius) / 2);
+}
+
+/* 테이블 스타일 */
+.table-container {
+  width: 100%;
+  background: var(--color-bg);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table thead {
+  background: var(--color-bg-secondary);
+}
+
+table th {
+  padding: var(--spacing-md);
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--color-border);
+}
+
+table tbody tr {
+  border-bottom: 1px solid var(--color-border);
+  transition: var(--transition);
+}
+
+table tbody tr:hover {
+  background: var(--color-bg-secondary);
+}
+
+table tbody tr:last-child {
+  border-bottom: none;
+}
+
+table td {
+  padding: var(--spacing-md);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+}
+
+table tbody tr td[colspan] {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--color-text-light);
+  font-style: italic;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: var(--font-size-xl);
+  }
+
+  .page-title-large {
+    font-size: var(--font-size-2xl);
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+
+  .btn-group {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
 }
