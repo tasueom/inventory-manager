@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, FormEvent } from "react";
 import {
   getInventories,
   createInventory,
   updateInventory,
   deleteInventory,
 } from "../../api";
+import { Inventory } from "../../types";
 import "./View.css";
 
 function View() {
   const [name, setName] = useState("");
-  const [unitPrice, setUnitPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [inventories, setInventories] = useState([]);
+  const [unitPrice, setUnitPrice] = useState<number | "">("");
+  const [quantity, setQuantity] = useState<number | "">("");
+  const [inventories, setInventories] = useState<Inventory[]>([]);
   const [loading, setLoading] = useState(true);
-  const [editingId, setEditingId] = useState(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   const loadInventories = async () => {
     const data = await getInventories();
@@ -25,28 +26,37 @@ function View() {
     loadInventories();
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const price = Number(unitPrice);
+    const quant = Number(quantity);
+
+    if (name.trim() === "" || price <= 0 || quant <= 0) {
+      alert("올바른 값을 입력해주세요.");
+      return;
+    }
+
     try {
+      const inventoryData = { name, unitPrice: price, quantity: quant };
       if (editingId === null) {
-        await createInventory({ name, unitPrice, quantity });
+        await createInventory(inventoryData);
       } else {
-        await updateInventory(editingId, { name, unitPrice, quantity });
+        await updateInventory(editingId, inventoryData);
         setEditingId(null);
       }
       setName("");
-      setUnitPrice(0);
-      setQuantity(0);
+      setUnitPrice("");
+      setQuantity("");
 
       await loadInventories();
-    } catch (err) {
+    } catch (err: any) {
       const msg = err?.response?.data?.message || "오류가 발생하였습니다.";
       alert(msg);
     }
   };
 
-  const handleEdit = (i) => {
+  const handleEdit = (i: Inventory) => {
     setEditingId(i.id);
     setName(i.name);
     setUnitPrice(i.unitPrice);
@@ -60,7 +70,7 @@ function View() {
     setQuantity("");
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: number) => {
     if (!window.confirm("삭제하시겠습니까?")) return;
     await deleteInventory(id);
     await loadInventories();
@@ -89,7 +99,9 @@ function View() {
               type="number"
               placeholder="가격"
               value={unitPrice}
-              onChange={(e) => setUnitPrice(Number(e.target.value))}
+              onChange={(e) =>
+                setUnitPrice(e.target.value === "" ? "" : Number(e.target.value))
+              }
             />
           </div>
           <div className="form-field">
@@ -97,14 +109,20 @@ function View() {
               type="number"
               placeholder="수량"
               value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
+              onChange={(e) =>
+                setQuantity(e.target.value === "" ? "" : Number(e.target.value))
+              }
             />
           </div>
           <div className="form-field">
             <input
               type="text"
               placeholder="총액"
-              value={unitPrice * quantity === 0 ? "" : unitPrice * quantity}
+              value={
+                Number(unitPrice) * Number(quantity) === 0
+                  ? ""
+                  : Number(unitPrice) * Number(quantity)
+              }
               readOnly
             />
           </div>
