@@ -7,3 +7,8 @@ export interface Inventory {
 }
 
 export type InventoryData = Omit<Inventory, "id" | "totalPrice">;
+
+export interface ApiErrorResponse {
+  status: number;
+  message: string;
+}

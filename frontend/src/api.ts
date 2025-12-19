@@ -1,54 +1,31 @@
+import axiosInstance from "./axiosInstance";
 import { Inventory, InventoryData } from "./types";
 
-const BASE_URL = "http://localhost:8090/api/inventory";
+export const getInventories = async (): Promise<Inventory[]> => {
+  const res = await axiosInstance.get<Inventory[]>("");
+  return res.data;
+};
 
-async function checkError(res: Response) {
-  if (!res.ok) {
-    const data = await res.json(); // {status, message} 기대
-    throw { response: { data } }; // View의 err.response.data.message 유지
-  }
-}
+export const getInventory = async (id: number): Promise<Inventory> => {
+  const res = await axiosInstance.get<Inventory>(`/${id}`);
+  return res.data;
+};
 
-export async function getInventories(): Promise<Inventory[]> {
-  const res = await fetch(`${BASE_URL}`);
-  await checkError(res);
-  return (await res.json()) as Inventory[];
-}
-
-export async function getInventory(id: number): Promise<Inventory> {
-  const res = await fetch(`${BASE_URL}/${id}`);
-  await checkError(res);
-  return (await res.json()) as Inventory;
-}
-
-export async function createInventory(
+export const createInventory = async (
   inventory: InventoryData
-): Promise<Inventory> {
-  const res = await fetch(`${BASE_URL}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(inventory),
-  });
-  await checkError(res);
-  return (await res.json()) as Inventory;
-}
+): Promise<Inventory> => {
+  const res = await axiosInstance.post<Inventory>("", inventory);
+  return res.data;
+};
 
-export async function updateInventory(
+export const updateInventory = async (
   id: number,
   inventory: InventoryData
-): Promise<Inventory> {
-  const res = await fetch(`${BASE_URL}/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(inventory),
-  });
-  await checkError(res);
-  return (await res.json()) as Inventory;
-}
+): Promise<Inventory> => {
+  const res = await axiosInstance.put<Inventory>(`/${id}`, inventory);
+  return res.data;
+};
 
-export async function deleteInventory(id: number): Promise<void> {
-  const res = await fetch(`${BASE_URL}/${id}`, {
-    method: "DELETE",
-  });
-  await checkError(res);
-}
+export const deleteInventory = async (id: number): Promise<void> => {
+  await axiosInstance.delete(`/${id}`);
+};
