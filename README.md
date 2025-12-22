@@ -38,7 +38,7 @@
 
 ### 1. Environment Variables 설정
 이 프로젝트는 보안을 위해 환경변수를 사용합니다. 실행 전 아래 변수를 설정해주세요.
-- `DB_NAME`: MySQL 계정명
+- `DB_USER`: MySQL 계정명
 - `DB_PASSWORD`: MySQL 비밀번호
 
 ### 2. Backend 실행
