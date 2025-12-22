@@ -1,0 +1,18 @@
+# 최상위 설정 파일임을 명시
+root = true
+
+[*]
+# 모든 파일의 인코딩을 UTF-8로 고정
+charset = utf-8
+# 들여쓰기는 공백(Space) 사용
+indent_style = space
+# 들여쓰기 크기는 4칸 (자바 표준)
+indent_size = 4
+# 파일 끝에 빈 줄 추가
+insert_final_newline = true
+# 줄 끝의 불필요한 공백 제거
+trim_trailing_whitespace = true
+
+[*.{yml,yaml}]
+# 설정 파일(yml)은 보통 2칸 들여쓰기를 사용함
+indent_size = 2
