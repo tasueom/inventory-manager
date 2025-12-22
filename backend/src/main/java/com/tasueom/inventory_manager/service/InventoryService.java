@@ -42,6 +42,12 @@ public class InventoryService {
         return toResponseDto(inventory);
     }
 
+    public List<InventoryResponseDto> searchInventory(String name) {
+        return inventoryRepository.findByNameContaining(name).stream()
+            .map(this::toResponseDto)
+            .toList();
+    }
+
     @Transactional
     public InventoryResponseDto updateInventory(Long id, InventoryRequestDto dto) {
         Inventory inventory = inventoryRepository.findById(id)

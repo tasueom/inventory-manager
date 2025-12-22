@@ -3,6 +3,7 @@ package com.tasueom.inventory_manager.controller;
 import com.tasueom.inventory_manager.dto.InventoryRequestDto;
 import com.tasueom.inventory_manager.dto.InventoryResponseDto;
 import com.tasueom.inventory_manager.service.InventoryService;
+import org.hibernate.annotations.IdGeneratorType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,14 @@ public class InventoryController {
     @GetMapping("/{id}")
     public InventoryResponseDto getOne(@PathVariable long id) {
         return service.getInventory(id);
+    }
+
+    @GetMapping("/search")
+    public List<InventoryResponseDto> search(@RequestParam String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return service.getInventoryList();
+        }
+        return service.searchInventory(name);
     }
 
     @PostMapping
