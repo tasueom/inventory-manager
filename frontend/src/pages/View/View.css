@@ -15,6 +15,80 @@
   margin: var(--spacing-xs);
 }
 
+/* 검색 폼 */
+.search-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.search-form h3 {
+  margin-bottom: 0;
+}
+
+/* 검색 입력과 버튼을 한 줄에 배치 (5:1 비율) */
+.search-input-group {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+/* 검색 입력 필드 - 5/6 비율 (5:1 비율) */
+.search-form input[type="text"] {
+  flex: 5;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  color: var(--color-text);
+  background: var(--color-bg);
+  transition: var(--transition);
+}
+
+.search-form input[type="text"]:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+}
+
+/* 검색 버튼 - 1/6 비율 (5:1 비율) */
+.search-form button[type="submit"] {
+  flex: 1;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  background: var(--color-primary);
+  color: white;
+  white-space: nowrap;
+  font-family: var(--font-family);
+}
+
+.search-form button[type="submit"]:hover {
+  background: var(--color-primary-dark);
+  box-shadow: var(--shadow-md);
+}
+
+.search-form button[type="submit"]:active {
+  transform: scale(0.98);
+}
+
+/* 반응형: 모바일에서 세로 배치 */
+@media (max-width: 768px) {
+  .search-input-group {
+    flex-direction: column;
+  }
+  
+  .search-form input[type="text"],
+  .search-form button[type="submit"] {
+    width: 100%;
+  }
+}
+
 /* 상품 목록 테이블 */
 #list-table {
   width: 100%;

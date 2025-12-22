@@ -5,6 +5,7 @@ import {
   updateInventory,
   deleteInventory,
   getInventory,
+  searchInventory,
 } from "../../api";
 import { Inventory } from "../../types";
 import "./View.css";
@@ -17,6 +18,7 @@ function View() {
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
+  const [keyword, setKeyword] = useState("");
 
   const loadInventories = async () => {
     try {
@@ -59,6 +61,27 @@ function View() {
       setErrorMsg("");
     } catch (err: any) {
       setErrorMsg(err?.message);
+    }
+  };
+
+  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+      setErrorMsg("");
+
+      if (!keyword.trim()) {
+        loadInventories();
+        return;
+      } else {
+        const data = await searchInventory(keyword);
+        setInventories(data);
+      }
+    } catch (err: any) {
+      setErrorMsg(err?.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -167,6 +190,17 @@ function View() {
               수정 취소
             </button>
           )}
+        </div>
+      </form>
+      <form className="search-form form-container" onSubmit={handleSearch}>
+        <h3>상품 검색</h3>
+        <div className="search-input-group">
+          <input
+            type="text"
+            value={keyword}
+            onChange={(e) => setKeyword(e.target.value)}
+          />
+          <button type="submit">검색</button>
         </div>
       </form>
       <table id="list-table">

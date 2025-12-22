@@ -11,6 +11,11 @@ export const getInventory = async (id: number): Promise<Inventory> => {
   return res.data;
 };
 
+export const searchInventory = async (name: string): Promise<Inventory[]> => {
+  const res = await axiosInstance.get<Inventory[]>(`/search?name=${name}`);
+  return res.data;
+};
+
 export const createInventory = async (
   inventory: InventoryData
 ): Promise<Inventory> => {
