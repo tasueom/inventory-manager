@@ -4,6 +4,7 @@ import {
   createInventory,
   updateInventory,
   deleteInventory,
+  getInventory,
 } from "../../api";
 import { Inventory } from "../../types";
 import "./View.css";
@@ -25,7 +26,7 @@ function View() {
       const data = await getInventories();
       setInventories(data);
     } catch (err: any) {
-      setErrorMsg(err?.response?.data?.message || "목록 조회 실패");
+      setErrorMsg(err?.message);
     } finally {
       setLoading(false);
     }
@@ -40,11 +41,6 @@ function View() {
 
     const price = Number(unitPrice);
     const quant = Number(quantity);
-
-    if (name.trim() === "" || price <= 0 || quant <= 0) {
-      setErrorMsg("올바른 값을 입력해주세요.");
-      return;
-    }
 
     try {
       const inventoryData = { name, unitPrice: price, quantity: quant };
@@ -62,18 +58,22 @@ function View() {
 
       setErrorMsg("");
     } catch (err: any) {
-      const msg = err?.response?.data?.message || "오류가 발생하였습니다.";
-      setErrorMsg(msg);
+      setErrorMsg(err?.message);
     }
   };
 
-  const handleEdit = (i: Inventory) => {
-    setEditingId(i.id);
-    setName(i.name);
-    setUnitPrice(i.unitPrice);
-    setQuantity(i.quantity);
+  const handleEdit = async (id: number) => {
+    try {
+      const i = await getInventory(id);
+      setEditingId(i.id);
+      setName(i.name);
+      setUnitPrice(i.unitPrice);
+      setQuantity(i.quantity);
 
-    setErrorMsg("");
+      setErrorMsg("");
+    } catch (err: any) {
+      setErrorMsg(err?.message);
+    }
   };
 
   const cancelEdit = () => {
@@ -92,9 +92,7 @@ function View() {
       await loadInventories();
       setErrorMsg("");
     } catch (err: any) {
-      setErrorMsg(
-        err?.response?.data?.message || "삭제 중 오류가 발생하였습니다."
-      );
+      setErrorMsg(err?.message);
     }
   };
 
@@ -157,9 +155,15 @@ function View() {
           </div>
         </div>
         <div className="btn-group">
-          <button type="submit" className="btn btn-primary">{editingId === null ? "저장" : "수정"}</button>
+          <button type="submit" className="btn btn-primary">
+            {editingId === null ? "저장" : "수정"}
+          </button>
           {editingId && (
-            <button type="button" className="btn btn-secondary" onClick={cancelEdit}>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={cancelEdit}
+            >
               수정 취소
             </button>
           )}
@@ -194,8 +198,18 @@ function View() {
                 <td>{i.quantity}</td>
                 <td>{i.totalPrice}</td>
                 <td>
-                  <button className="btn btn-primary btn-sm" onClick={() => handleEdit(i)}>수정</button>
-                  <button className="btn btn-danger btn-sm" onClick={() => handleDelete(i.id)}>삭제</button>
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => handleEdit(i.id)}
+                  >
+                    수정
+                  </button>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDelete(i.id)}
+                  >
+                    삭제
+                  </button>
                 </td>
               </tr>
             ))
