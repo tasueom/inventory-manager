@@ -20,6 +20,9 @@ public class Inventory {
 
     private int quantity;
 
+    @Version
+    private Long version;
+
     public Inventory(String name, int unitPrice, int quantity) {
         validate(unitPrice, quantity);
         this.name = name;
