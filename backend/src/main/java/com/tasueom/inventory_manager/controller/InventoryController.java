@@ -52,4 +52,9 @@ public class InventoryController {
         service.deleteInventory(id);
     }
 
+    @PostMapping("/{id}/purchase")
+    public InventoryResponseDto purchase(@PathVariable long id, @RequestParam int amount) {
+        return service.purchase(id, amount);
+    }
+
 }

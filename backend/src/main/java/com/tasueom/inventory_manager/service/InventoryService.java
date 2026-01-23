@@ -74,4 +74,15 @@ public class InventoryService {
 
         return dto;
     }
+
+    @Transactional
+    public InventoryResponseDto purchase(Long id, int amount) {
+        Inventory inventory = inventoryRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("해당 상품이 없습니다. id=" + id));
+
+        inventory.decreaseQuantity(amount); // 더티체킹으로 update
+
+        return toResponseDto(inventory);
+    }
+
 }

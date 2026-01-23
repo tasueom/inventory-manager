@@ -34,6 +34,13 @@ public class Inventory {
         this.quantity = quantity;
     }
 
+    public void decreaseQuantity(int amount) {
+        if (amount < 1) throw new IllegalArgumentException("구매 수량은 1 이상이어야 합니다.");
+        if (this.quantity < amount) throw new IllegalArgumentException("재고가 부족합니다.");
+        this.quantity -= amount;
+    }
+
+
 
     private void validate(int unitPrice, int quantity){
         if (unitPrice < 1 ) throw new IllegalArgumentException("단가는 1 이상이어야합니다.");
