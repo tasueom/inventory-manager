@@ -77,6 +77,9 @@
 
 ## 🐋 실행 방법 (Docker Compose)
 
+본 프로젝트는 Docker 기반으로 구성되어 있으며  
+Windows / macOS / Linux 환경에서 Docker Desktop 설치 후 동일한 방식으로 실행할 수 있습니다.
+
 ### 1) 프로젝트 루트로 이동
 
 ```bash
