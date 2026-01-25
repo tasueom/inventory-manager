@@ -11,6 +11,7 @@
 - [기술 스택](#-기술-스택)
 - [인프라 및 배포 구조](#-인프라-및-배포-구조)
 - [실행 방법 (Docker Compose)](#-실행-방법-docker-compose)
+- [로컬 실행 방법 (Docker 미사용)](#-로컬-실행-방법-docker-미사용)
 - [성장 기록](#-성장-기록)
 
 ---
@@ -110,6 +111,78 @@ docker compose down
   (`SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD`)
 - Frontend API Base URL (빌드 시 주입)  
   (`VITE_API_BASE_URL = http://localhost:8090/api/inventory`)
+
+## 💻 로컬 실행 방법 (Docker 미사용)
+
+Docker 환경이 아닌, 로컬 개발 환경에서 Frontend / Backend를 각각 실행하는 방법입니다.
+
+---
+
+### 1) 데이터베이스 준비 (MySQL)
+
+- MySQL 서버가 로컬에 설치되어 있어야 합니다.
+- 데이터베이스만 미리 생성하면 됩니다.  
+  (JPA Entity 기반으로 테이블은 자동 생성됩니다)
+
+```sql
+CREATE DATABASE inventory;
+```
+
+---
+
+### 2) Backend 환경 변수 설정
+
+Backend는 **환경 변수**를 통해 DB 접속 정보를 설정합니다.
+
+아래 환경 변수를 본인 로컬 환경에 맞게 설정합니다.
+
+```text
+DB_USER=본인_DB_계정
+DB_PASSWORD=본인_DB_비밀번호
+```
+
+---
+
+### 3) Backend 실행
+
+```bash
+cd backend
+./mvnw spring-boot:run
+```
+
+- 기본 실행 포트: `8090`
+- 서버 정상 실행 후 API Base URL:
+  ```
+  http://localhost:8090
+  ```
+
+---
+
+### 4) Frontend 환경 변수 설정
+
+Frontend는 API 주소를 **환경 변수**로 주입받습니다.
+
+`frontend` 디렉토리에 `.env` 파일을 생성하고 아래 내용을 작성합니다.
+
+```env
+VITE_API_BASE_URL=http://localhost:8090/api/inventory
+```
+
+---
+
+### 5) Frontend 실행
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+- 기본 실행 포트: `5173`
+- 접속 주소:
+  ```
+  http://localhost:5173
+  ```
 
 ---
 
