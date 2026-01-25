@@ -1,5 +1,5 @@
 /* ============================================
-   헤더 컴포넌트 스타일
+   ?? ???? ???
    ============================================ */
 
 header {
@@ -22,7 +22,7 @@ header h1 {
   letter-spacing: -0.02em;
 }
 
-/* 네비게이션 */
+/* ????? */
 nav {
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
@@ -31,13 +31,14 @@ nav {
 }
 
 nav ul {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--spacing-md);
   max-width: var(--container-max-width);
   margin: 0 auto;
-  height: 50px;
+  height: 56px;
 }
 
 nav li {
@@ -65,7 +66,7 @@ nav a.active {
 }
 
 nav a.active::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: var(--spacing-xs);
@@ -75,20 +76,62 @@ nav a.active::after {
   border-radius: 2px;
 }
 
-/* 반응형 */
+.role-toggle-item {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.role-toggle {
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  background: var(--color-bg-secondary);
+  color: var(--color-text);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.role-toggle:hover {
+  border-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.role-toggle:active {
+  transform: scale(0.98);
+}
+
+/* ??? */
 @media (max-width: 768px) {
   header h1 {
     font-size: var(--font-size-xl);
   }
-  
+
   nav ul {
     gap: var(--spacing-sm);
     padding: 0 var(--spacing-sm);
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 56px;
   }
-  
+
   nav a {
     font-size: var(--font-size-sm);
     padding: var(--spacing-xs);
   }
-}
 
+  .role-toggle-item {
+    position: static;
+    transform: none;
+    width: 100%;
+    margin-top: var(--spacing-xs);
+  }
+
+  .role-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+}
