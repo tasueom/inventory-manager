@@ -17,7 +17,7 @@ export const searchInventory = async (name: string): Promise<Inventory[]> => {
 };
 
 export const createInventory = async (
-  inventory: InventoryData
+  inventory: InventoryData,
 ): Promise<Inventory> => {
   const res = await axiosInstance.post<Inventory>("", inventory);
   return res.data;
@@ -25,7 +25,7 @@ export const createInventory = async (
 
 export const updateInventory = async (
   id: number,
-  inventory: InventoryData
+  inventory: InventoryData,
 ): Promise<Inventory> => {
   const res = await axiosInstance.put<Inventory>(`/${id}`, inventory);
   return res.data;
@@ -33,4 +33,14 @@ export const updateInventory = async (
 
 export const deleteInventory = async (id: number): Promise<void> => {
   await axiosInstance.delete(`/${id}`);
+};
+
+export const purchaseInventory = async (
+  id: number,
+  amount: number,
+): Promise<Inventory> => {
+  const res = await axiosInstance.post<Inventory>(
+    `/${id}/purchase?amount=${amount}`,
+  );
+  return res.data;
 };
