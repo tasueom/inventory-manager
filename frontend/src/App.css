@@ -304,6 +304,19 @@ table tbody tr td[colspan] {
   font-style: italic;
 }
 
+/* Shared list table base styles (View + Purchase) */
+#list-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-bg);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+#list-table button {
+  margin: var(--spacing-xs);
+}
 /* 반응형 */
 @media (max-width: 768px) {
   .page-title {

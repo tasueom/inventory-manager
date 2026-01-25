@@ -197,10 +197,11 @@ function View() {
         <div className="search-input-group">
           <input
             type="text"
+            className="form-input"
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
           />
-          <button type="submit">검색</button>
+          <button type="submit" className="btn btn-primary">검색</button>
         </div>
       </form>
       <table id="list-table">

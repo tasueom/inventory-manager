@@ -97,7 +97,7 @@ function Purchase() {
                 <td>{item.quantity}</td>
                 <td>
                   <input
-                    className="purchase-amount-input"
+                    className="form-input purchase-amount-input"
                     type="number"
                     min={1}
                     max={item.quantity}
