@@ -1,66 +1,118 @@
 # 📦 Inventory Manager (재고 관리 시스템)
 
-스프링 부트와 리액트를 활용하여 제작한 **풀스택 재고 관리 토이 프로젝트**입니다. 
-단순한 CRUD 구현을 넘어, 백엔드 아키텍처 설계와 프론트엔드의 타입 안정성을 고려하며 개발했습니다.
-
-## 🚀 기술 스택
-
-### Backend
-- **Framework**: Java 17, Spring Boot 3.5.8
-- **ORM**: Spring Data JPA
-- **Database**: MySQL
-- **Architecture**: Layered Architecture (Controller - Service - Repository)
-
-### Frontend
-- **Library**: React (Vite)
-- **Language**: TypeScript
-- **State/Communication**: Axios
+다수의 사용자가 동시에 접근하는 환경에서도 정확한 재고 수량을 보장할 수 있도록 설계된 **풀스택 재고 관리 프로젝트**입니다. 단순히 기능을 구현하는 것에 그치지 않고, 백엔드 동시성 제어와 **Docker Compose를 활용한 인프라 자동화**에 초점을 맞췄습니다.
 
 ---
 
-## ✨ 핵심 개발 포인트
+## 📋 목차
 
-### 1. 보안 및 유지보수성 향상
-- **환경변수 활용**: DB 접속 정보(계정, 비밀번호)를 코드에 직접 노출하지 않고 환경변수(`${DB_PASSWORD}`)를 통해 관리하도록 개선했습니다.
-- **DTO 분리**: Entity와 Request/Response DTO를 엄격히 분리하여 API 데이터 전송의 효율성을 높이고 내부 도메인 구조를 보호했습니다.
-
-### 2. 견고한 에러 핸들링
-- **Global Exception Handling**: `@RestControllerAdvice`를 사용하여 백엔드 전역 예외 처리를 구현, 일관된 `ApiErrorResponse` 규격을 프론트엔드에 제공합니다.
-- **Axios Interceptor**: 프론트엔드에서 백엔드 에러 메시지를 가공하여 사용자에게 Alert 및 메시지 박스로 전달하도록 구현했습니다.
-
-### 3. TypeScript 도입 및 리팩토링
-- 초기 JavaScript 환경에서 TypeScript로 전환하여 데이터 타입 불일치로 인한 런타임 에러를 사전에 방지했습니다.
-- 반복되는 비즈니스 로직을 서비스 레이어로 위임하여 코드의 재사용성을 높였습니다.
+- [주요 기능](#주요-기능)
+- [기술적 도전 (동시성 제어)](#-기술적-도전-동시성-제어)
+- [기술 스택](#기술-스택)
+- [인프라 및 배포 구조](#-인프라-및-배포-구조)
+- [실행 방법 (Docker Compose)](#-실행-방법-docker-compose)
+- [프로젝트 구조](#-프로젝트-구조)
 
 ---
 
-## 🛠 실행 방법 (Local)
+## 주요 기능
 
-### 1. Environment Variables 설정
-이 프로젝트는 보안을 위해 환경변수를 사용합니다. 실행 전 아래 변수를 설정해주세요.
-- `DB_USER`: MySQL 계정명
-- `DB_PASSWORD`: MySQL 비밀번호
+### 👤 사용자 모드 (User Mode)
 
-### 2. Backend 실행
+- **실시간 재고 구매**: 전체 상품 목록을 조회하고 실시간으로 재고를 차감하는 구매 프로세스를 수행합니다.
+- **데이터 정합성 보장**: 낙관적 락(Optimistic Lock)을 적용하여 동시 주문 시에도 정확한 수량을 유지합니다.
+
+### 🛡️ 관리자 모드 (Admin Mode)
+
+- **재고 수정 및 관리**: 상품 정보(이름, 단가, 수량)를 자유롭게 관리하고 새로운 품목을 등록합니다.
+- **통합 관리 UI**: 관리자 권한 전용 대시보드를 통해 전체 재고 현황을 효율적으로 파악합니다.
+
+---
+
+## 🚀 기술적 도전 (동시성 제어)
+
+재고 관리 시스템에서 가장 치명적인 **'동시 요청 시 데이터 유실'** 문제를 해결하기 위해 다음과 같은 과정을 거쳤습니다.
+
+### 1. 문제 상황 인식
+
+- 다수의 사용자가 동시에 동일 상품을 구매할 경우, 경쟁 상태가 발생하여 데이터가 유실되거나 실제보다 더 많은 주문이 처리될 위험을 확인했습니다.
+
+### 2. 해결책: JPA 낙관적 락 (Optimistic Lock)
+
+- **도입 이유**: 데이터 충돌 빈도가 낮을 것으로 예상되는 환경에서 시스템 부하를 최소화하기 위해, 데이터베이스 락 대신 애플리케이션 레벨에서 버전을 검증하는 `@Version` 방식을 선택했습니다.
+- **구현**: 엔티티 내부에 버전 관리 필드를 추가하여 수정 시점의 데이터 유효성을 검증하도록 설계했습니다.
+
+### 3. 검증: JUnit 멀티스레드 테스트
+
+- `ExecutorService`와 `CountDownLatch`를 활용하여 30개의 요청이 동시에 발생하는 극한의 환경을 시뮬레이션했습니다.
+- **테스트 결과**: 30건의 동시 요청 중 9건 성공, 21건 충돌 감지를 통해
+  동시성 상황에서도 재고 수량이 음수로 내려가지 않음을 검증했습니다.
+
+---
+
+## 🛠 기술 스택
+
+| 구분         | 상세 기술                                   |
+| :----------- | :------------------------------------------ |
+| **Backend**  | Java 17, Spring Boot 3.5.8, Spring Data JPA |
+| **Frontend** | React (Vite), TypeScript, Axios             |
+| **Database** | MySQL 8.0                                   |
+| **Infra**    | **Docker, Docker Compose**                  |
+| **Test**     | JUnit 5, AssertJ                            |
+
+---
+
+## 🏗 인프라 및 배포 구조
+
+이 프로젝트는 **Docker Compose**를 통해 각 계층을 컨테이너화하고 유기적으로 연결하여 인프라를 구축했습니다.
+
+- **Frontend**: Vite로 빌드한 정적 파일을 Nginx 컨테이너를 통해 서빙하여,
+  개발/배포 환경 간 실행 차이를 최소화했습니다.
+- **Backend**: Spring Boot 애플리케이션을 이미지화하여 환경 독립성을 확보했습니다.
+- **Database**: MySQL 컨테이너를 가상 네트워크로 연결하여 외부 노출을 최소화하고 보안성을 높였습니다.
+- **Environment**: Docker Compose 환경에서는 테스트 목적의 계정 정보를 사용했으며,
+  실제 운영 환경에서는 민감 정보는 환경 변수 또는 별도 설정으로 분리하는 구조를 고려했습니다.
+
+---
+
+## 🐋 실행 방법 (Docker Compose)
+
+### 1) 프로젝트 루트로 이동
+
 ```bash
-cd backend
-./mvnw spring-boot:run
+cd "프로젝트 폴더 주소"
 ```
 
-### 3. Frontend 실행
+### 2) Docker Compose로 실행
+
 ```bash
-cd frontend
-npm install
-npm run dev
+docker compose up -d --build
+```
+
+### 3) 종료
+
+```bash
+docker compose down
 ```
 
 ---
 
-## 📈 성장 기록 (Commit History Summary)
-2025-12 ~: 초기 프로젝트 환경 구성 및 기초 CRUD 구현
+### 환경 설정 값
 
-CSS 리팩토링: 사용자 경험 향상을 위한 UI/UX 지속적 개선
+이 프로젝트는 `docker-compose.yml`에 실행에 필요한 값들이 이미 포함되어 있습니다.
 
-안정성 강화: JS -> TS 전환 및 API 호출 구조 개선
+- DB 계정/비밀번호 및 DB 생성 정보  
+  (`MYSQL_ROOT_PASSWORD`, `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD`)
+- Backend DB 접속 정보  
+  (`SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD`)
+- Frontend API Base URL (빌드 시 주입)  
+  (`VITE_API_BASE_URL = http://localhost:8090/api/inventory`)
 
-보안 강화: DB 접근 권한 분리 및 환경변수 주입 방식 도입
+---
+
+## 📈 성장 기록
+
+- **타입 안정성 확보**: JavaScript 환경에서 발생하던 런타임 에러를 방지하기 위해 전체 프로젝트를 **TypeScript**로 전환했습니다.
+- **전역 예외 처리**: `@RestControllerAdvice`를 도입하여 백엔드 에러 응답 규격을 일원화하고 프론트엔드 대응 효율을 높였습니다.
+- **데이터 정합성 및 검증**: 재고 차감 시 발생하는 동시성 문제를 **낙관적 락**으로 해결하고, **JUnit 5**를 활용해 멀티스레드 환경에서의 정합성을 코드로 직접 증명했습니다.
+- **인프라 자동화**: Docker를 도입하여 로컬 환경과 배포 환경의 격차를 해소하고 Docker Compose로 원클릭 실행 환경을 구축했습니다.
