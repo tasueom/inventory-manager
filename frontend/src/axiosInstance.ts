@@ -2,7 +2,7 @@ import axios from "axios";
 import { ApiErrorResponse } from "./types";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8090/api/inventory",
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
